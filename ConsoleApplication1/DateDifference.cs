@@ -19,7 +19,7 @@ namespace ConsoleApplication1
                 DateTime dt = ValidateDob(db);
                 string output = Age(dt);
                 Console.WriteLine(output);
-                Console.WriteLine("Do you want to continue(y/n)?");
+                Console.WriteLine("\nDo you want to continue(y/n)?");
                 ch = Console.ReadLine();
             } while (ch == "y");
             
@@ -39,14 +39,14 @@ namespace ConsoleApplication1
              {
                 if (dob1 > DateTime.Now)
                  {
-                    Console.WriteLine("Please Enter a Proper Date");
+                    Console.WriteLine("\nPlease Enter a Proper Date");
                     return DateTime.MinValue;
                  }
                 return dob1;
              }
             else
              {
-                Console.WriteLine("Not a date");
+                Console.WriteLine("\nNot a date");
                 Console.ReadLine();
                 Environment.Exit(0);
                 return DateTime.MinValue;
@@ -73,7 +73,7 @@ namespace ConsoleApplication1
                 }
             }
             int days = Now.Subtract(d.AddMonths(months)).Days;
-            return String.Format("The Age is : {0} years {1} months {2} days",years,months,days);
+            return String.Format("\nThe Age is : {0} years {1} months {2} days",years,months,days);
 
         }
     }
