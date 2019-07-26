@@ -67,8 +67,10 @@ namespace ConsoleApplication1
         {
             DateTime now = DateTime.Now;
             DateTimeOffset dateofbirth = new DateTimeOffset(dob1);
-            int years = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Year - 1;         
-            DateTimeOffset d = dateofbirth.AddYears(years);
+            int years = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Year - 1;
+            int months = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Month - 1;
+            int days = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Day - 1;
+            /*DateTimeOffset d = dateofbirth.AddYears(years);
 
 
             int months = 0;
@@ -85,8 +87,8 @@ namespace ConsoleApplication1
                     break;
                 }
             }
-            int days = DateTimeOffset.Now.Subtract(d.AddMonths(months)).Days;
-            return string.Format("\nThe Age is : {0} years {1} months {2} days\n",years,months,days);
+            int days = DateTimeOffset.Now.Subtract(d.AddMonths(months)).Days;*/
+            return string.Format("\nThe Age is : {0} years {1} months {2} days \n",years,months,days);
 
 
             /*int years = new DateTime(DateTime.Now.Subtract(dob1).Ticks).Year - 1;
