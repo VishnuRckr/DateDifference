@@ -10,29 +10,75 @@ namespace ConsoleApplication1
     class program
     {
         public static int flag;
-        public string name;
-        public string dob1;
+       
         public static void Main(string[] args)
         {
+            List<Details> persons = new List<Details>();
             string ch = "y";
             flag = 1;
+            
             do
             {
-                Details a = new Details();
-                string db = Details.InputDetails();
-                //string db = GetDateOfBirth();
-                DateTime dt = ValidateDob(db);
+                int count = GetTotalPersons();
                 if (flag == 1)
                 {
-                    string output = Age(dt);
-                    Console.WriteLine(output);
+                    string age;
+                    for (int i = 1; i <= count; i++)
+                    {
+
+                        string name = GetName();
+
+                        string dob = GetDateOfBirth();
+                        DateTime dt = ValidateDob(dob);
+
+
+                        if (dt != DateTime.MinValue)
+                        {
+                            persons.Add(new Details(name, dt));
+                            Console.WriteLine("\nDetails Added\n");
+                        }
+                        else
+                        {
+                          
+                            flag = 0;
+                            break;
+                        }
+
+                        age = Age(dt);
+                        Console.WriteLine(age);
+                    }
+                   
                 }
 
-                Console.WriteLine("\nDo you want to continue(y/n)?");
-                ch = Console.ReadLine();
-            } while (ch == "y");
+                List<Details> SortedList = Details.SortPersons(persons);
 
+                foreach (var item in SortedList)
+                {
+
+                    Console.WriteLine("Name : {0} \t Date Of Birth : {1}\n", item.Name, item.Dob);
+
+                }
+                                                
+                 Console.WriteLine("\nDo you want to continue(y/n)?");
+                 ch = Console.ReadLine();
+             } while (ch == "y");
+         
         }
+
+        public static int GetTotalPersons()
+        {
+            Console.WriteLine("\nEnter the number of persons :");
+            int num = Convert.ToInt32(Console.ReadLine());
+            return num;
+        }
+
+        public static string GetName()
+        {
+            Console.WriteLine("\nEnter your name : ");
+            string name = Console.ReadLine();
+            return name;
+        }
+
         public static string GetDateOfBirth()
         {
             Console.WriteLine("\nEnter your date of birth seperated by '/' : ");
@@ -48,33 +94,61 @@ namespace ConsoleApplication1
             {
                 if (dob1 > DateTime.Now)
                 {
-                    Console.WriteLine("\nPlease Enter a Proper Date");
-                    flag = 0;
+                    Console.WriteLine("\nPlease Enter a Proper Date\n");
                     return DateTime.MinValue;
+                    flag = 0;
                 }
                 return dob1;
                 flag = 1;
             }
             else
             {
-                Console.WriteLine("\nNot a date");
+                Console.WriteLine("\nNot a date\n");
+                return DateTime.MinValue;
                 flag = 0;
 
-                return DateTime.MinValue;
-
             }
+           
         }
 
         public static string Age(DateTime dob1)
         {
-            DateTime now = DateTime.Now;
-            DateTimeOffset dateofbirth = new DateTimeOffset(dob1);
-            int years = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Year - 1;
-            int months = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Month - 1;
-            int days = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Day - 1;
+            if (flag==1)
+            {
+                DateTime now = DateTime.Now;
+                DateTimeOffset dateofbirth = new DateTimeOffset(dob1);
+                int years = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Year - 1;
+                int months = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Month - 1;
+                int days = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Day - 1;
 
-            return string.Format("\nThe Age is : {0} years {1} months {2} days \n", years, months, days);
+                return string.Format("\nYour Age is : {0} years {1} months {2} days \n", years, months, days);
+            }
+            return null;
+            
 
+        }
+    }
+
+    class Details
+    {
+        public string Name { get;  set; }
+        public DateTime Dob { get;  set; }
+        public int Total { get;  set; }
+
+
+        public Details(string name, DateTime dob)
+        {
+            this.Name = name;
+            this.Dob = dob;
+            this.Total = (DateTime.Now - dob).Days;
+
+        }
+
+        public static List<Details> SortPersons(List<Details> persons)
+        {
+            List<Details> SortedList = persons.OrderBy(order => order.Total).ToList();
+            
+            return SortedList;
         }
     }
 
@@ -107,30 +181,7 @@ return String.Format("\nThe Age is : {0} years {1} months {2} days", years, mont
 
 
 
-class Details
-{
-    public string name;
-    public string dob1;
-    public static string InputDetails()
-    {
-         List<string> list = new List<string>();
-         Details obj = new Details();
-         Console.WriteLine("Enter the number of persons : ");
-         int total = Convert.ToInt32(Console.ReadLine());
-         for (int i = 1; i <= total; i++)
-         {
-           Console.WriteLine("Enter your name : ");
-           obj.name = Console.ReadLine();
-           list.Add(obj.name);
-           Console.WriteLine("Enter the date of birth");
-           obj.dob1 = Console.ReadLine();
-           list.Add(obj.dob1);
-           
-         }
-        return obj.dob1;
-    }
 
-}
 
 
    
