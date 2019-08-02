@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
+using System.Xml.Serialization;
+
 
 namespace ConsoleApplication1
 {
@@ -14,6 +18,17 @@ namespace ConsoleApplication1
         {
             this.PetBreed = petbreed;
         }
-       
+
+        public Pet()
+        {
+        }
+
+        /* public void _petSerialize(PersonDetails item)
+         {
+
+             StreamWriter stream = new StreamWriter(@"D:/Pets.xml");
+             XmlSerializer xmlSerializer = new XmlSerializer(typeof(PersonDetails));
+             xmlSerializer.Serialize(stream, item);
+         }*/
     }
 }

@@ -4,6 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace ConsoleApplication1
 {
@@ -19,9 +22,11 @@ namespace ConsoleApplication1
                 Type = _Menu();
                 string name, dob;
                 DateTime dt;
+                PersonDetails personObj = new PersonDetails();
+                Pet petObj = new Pet();
                 switch (Type)
                 {
-                    case 1 :
+                    case 1:
                         name = _GetName();
                         dob = _GetDateOfBirth();
                         dt = _ValidateDob(dob);
@@ -37,7 +42,7 @@ namespace ConsoleApplication1
                         }
                         break;
 
-                    case 2 :
+                    case 2:
                         name = _GetName();
                         dob = _GetDateOfBirth();
                         dt = _ValidateDob(dob);
@@ -54,7 +59,7 @@ namespace ConsoleApplication1
                         }
                         break;
 
-                    case 3 :
+                    case 3:
                         if (persons.Count != 0)
                         {
                             List<PersonDetails> sortedList = PersonDetails.SortPersons(persons);
@@ -70,6 +75,23 @@ namespace ConsoleApplication1
                             Console.WriteLine("\nlist is empty\n");
                         }
                         break;
+                    case 4:
+
+                        List<PersonDetails> sortedList1 = PersonDetails.SortPersons(persons);
+                        foreach (var item in sortedList1)
+                        {
+                            if (item is PersonDetails)
+                            {
+                                personObj._Serialize(item);
+                            }
+                            /*if (item is Pet)
+                            {
+                                petObj._petSerialize(item);
+                            }*/
+                        }
+                        Console.WriteLine("\nDetails copied to file\n");
+                        break;
+
 
                     default: Console.WriteLine("Invalid Entry"); break;
                 }
@@ -85,11 +107,9 @@ namespace ConsoleApplication1
 
         private static int _Menu()
         {
-            Console.WriteLine("\nMENU\n 1.Add Person\n 2.Add pet\n 3.View All\n");
+            Console.WriteLine("\nMENU\n 1.Add Person\n 2.Add pet\n 3.View All\n 4.Write to file\n 5.View From File\n");
             Type = Convert.ToInt32(Console.ReadLine());
             return Type;
-
-
         }
 
         private static string _GetName()
@@ -113,14 +133,12 @@ namespace ConsoleApplication1
             {
                 if (dob1 > DateTime.Now)
                 {
-                    //Console.WriteLine("\nPlease Enter a Proper Date\n");
                     return DateTime.MinValue;
                 }
                 return dob1;
             }
             else
             {
-                //Console.WriteLine("\nNot a date\n");
                 return DateTime.MinValue;
             }
         }
