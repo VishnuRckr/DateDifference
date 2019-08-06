@@ -27,6 +27,7 @@ namespace ConsoleApplication1
                 switch (Type)
                 {
                     case 1:
+
                         name = _GetName();
                         dob = _GetDateOfBirth();
                         dt = _ValidateDob(dob);
@@ -43,6 +44,7 @@ namespace ConsoleApplication1
                         break;
 
                     case 2:
+
                         name = _GetName();
                         dob = _GetDateOfBirth();
                         dt = _ValidateDob(dob);
@@ -51,7 +53,6 @@ namespace ConsoleApplication1
                             string petBreed = _GetPetBreed();
                             persons.Add(new Pet(name, petBreed, dt));
                             Console.WriteLine("\nDetails Added\n");
-
                         }
                         else
                         {
@@ -60,6 +61,7 @@ namespace ConsoleApplication1
                         break;
 
                     case 3:
+
                         if (persons.Count != 0)
                         {
                             List<PersonDetails> sortedList = PersonDetails.SortPersons(persons);
@@ -75,23 +77,34 @@ namespace ConsoleApplication1
                             Console.WriteLine("\nlist is empty\n");
                         }
                         break;
+
                     case 4:
 
                         List<PersonDetails> sortedList1 = PersonDetails.SortPersons(persons);
-                        foreach (var item in sortedList1)
+                        Console.WriteLine("\n1. Serialize Persons\n2. Serialize Pets\n");
+                        int choice = Convert.ToInt32(Console.ReadLine());
+                        switch (choice)
                         {
-                            if (item is PersonDetails)
-                            {
-                                personObj._Serialize(item);
-                            }
-                            /*if (item is Pet)
-                            {
-                                petObj._petSerialize(item);
-                            }*/
+                            case 1: personObj.Serializer(sortedList1); break;
+                            case 2: petObj.Serializer(sortedList1); break;
+                            default: Console.WriteLine("Invalid Entry"); break;
                         }
+
                         Console.WriteLine("\nDetails copied to file\n");
                         break;
 
+                    case 5:
+
+                        List<PersonDetails> sortedList2 = PersonDetails.SortPersons(persons);
+                        Console.WriteLine("\n1. Deserialize Persons\n2. Deserialize Pets\n");
+                        int choice1 = Convert.ToInt32(Console.ReadLine());
+                        switch (choice1)
+                        {
+                            case 1: personObj.Deserializer(sortedList2); break;
+                            case 2: petObj.Deserializer(sortedList2); break;
+                            default: Console.WriteLine("Invalid Entry"); break;
+                        }
+                        break;
 
                     default: Console.WriteLine("Invalid Entry"); break;
                 }

@@ -10,19 +10,21 @@ using System.Xml.Serialization;
 namespace ConsoleApplication1
 {
 
-    public class PersonDetails
+    public class PersonDetails : ISerializationAndDeserialization
     {
 
-        public string Name { get; protected set; }
-        public DateTime Dob { get; protected set; }
-        public Age Age { get; protected set; }
+        public string Name { get; set; }
+
+        public DateTime Dob { get; set; }
+
+        public Age Age { get; set; }
+
 
         public PersonDetails(string name, DateTime dob)
         {
             this.Name = name;
             this.Dob = dob;
             this.Age = new Age(dob);
-
         }
 
         public PersonDetails()
@@ -34,19 +36,25 @@ namespace ConsoleApplication1
             List<PersonDetails> sortedList = persons.OrderBy(order => order.Dob).ToList();
             return sortedList;
         }
-        public void _Serialize(PersonDetails item)
+        public void Serializer(List<PersonDetails> item)
         {
             string jsonSerializer = JsonConvert.SerializeObject(item);
             string path = @"D:/PersonDetails.json";
             File.AppendAllText(path, jsonSerializer);
-
         }
 
-        /* public void _Deserialize()
-         {                      
-             PersonDetails jsonDeserializer = JsonConvert.DeserializeObject<PersonDetails>(File.ReadAllText(@"D:/PersonDetails.json"));
-             Console.WriteLine("Name : {0} \t Date Of Birth : {1} \t Age : {2}", jsonDeserializer.Name, jsonDeserializer.Dob, jsonDeserializer.Age);
-         }*/
-
+        public void Deserializer(List<PersonDetails> item)
+        {
+            using (StreamReader reader = new StreamReader(@"D:/PersonDetails.json"))
+            {
+                string json = reader.ReadToEnd();
+                var jsonDeserializer = JsonConvert.DeserializeObject <List<PersonDetails>>(json);
+                Console.WriteLine("\nDeserialized Persons' list is\n");
+                foreach (var element in jsonDeserializer)
+                {
+                    Console.WriteLine("Name: {0}\t Date Of Birth : {1}\t Age : {2} years {3} months {4} days\n", element.Name, element.Dob, element.Age.Years, element.Age.Months, element.Age.Days);
+                }           
+            }
+        }
     }
 }
