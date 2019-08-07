@@ -9,6 +9,6 @@ namespace ConsoleApplication1
     interface ISerializationAndDeserialization
     {
         void Serializer(List<PersonDetails> item);
-        void Deserializer(List<PersonDetails> item);
+        void Deserializer();
     }
 }

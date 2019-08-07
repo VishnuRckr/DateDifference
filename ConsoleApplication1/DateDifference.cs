@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,26 +15,27 @@ namespace ConsoleApplication1
     {
         public static int Type = 0;
 
+
         public static void Main(string[] args)
         {
+
             List<PersonDetails> persons = new List<PersonDetails>();
             do
             {
                 Type = _Menu();
-                string name, dob;
-                DateTime dt;
                 PersonDetails personObj = new PersonDetails();
                 Pet petObj = new Pet();
+                List<PersonDetails> personList = new List<PersonDetails>();
+                List<PersonDetails> petList = new List<PersonDetails>();
                 switch (Type)
                 {
                     case 1:
 
-                        name = _GetName();
-                        dob = _GetDateOfBirth();
-                        dt = _ValidateDob(dob);
-                        if (dt != DateTime.MinValue)
+
+                        var getPerson = _Get();
+                        if (getPerson.Item2 != DateTime.MinValue)
                         {
-                            persons.Add(new PersonDetails(name, dt));
+                            persons.Add(new PersonDetails(getPerson.Item1, getPerson.Item2));
                             Console.WriteLine("\nDetails Added\n");
 
                         }
@@ -45,13 +47,12 @@ namespace ConsoleApplication1
 
                     case 2:
 
-                        name = _GetName();
-                        dob = _GetDateOfBirth();
-                        dt = _ValidateDob(dob);
-                        if (dt != DateTime.MinValue)
+                        var getPet = _Get();
+                        string petBreed = _GetPetBreed();
+
+                        if (getPet.Item2 != DateTime.MinValue)
                         {
-                            string petBreed = _GetPetBreed();
-                            persons.Add(new Pet(name, petBreed, dt));
+                            persons.Add(new Pet(getPet.Item1, petBreed, getPet.Item2));
                             Console.WriteLine("\nDetails Added\n");
                         }
                         else
@@ -81,28 +82,49 @@ namespace ConsoleApplication1
                     case 4:
 
                         List<PersonDetails> sortedList1 = PersonDetails.SortPersons(persons);
-                        Console.WriteLine("\n1. Serialize Persons\n2. Serialize Pets\n");
-                        int choice = Convert.ToInt32(Console.ReadLine());
-                        switch (choice)
-                        {
-                            case 1: personObj.Serializer(sortedList1); break;
-                            case 2: petObj.Serializer(sortedList1); break;
-                            default: Console.WriteLine("Invalid Entry"); break;
-                        }
 
-                        Console.WriteLine("\nDetails copied to file\n");
+                        foreach (var item in sortedList1)
+                        {
+                            if (item is Pet)
+                            {
+                                petList.Add(item);
+                            }
+                            else
+                            {
+                                personList.Add(item);
+                            }
+                        }
+                        if (personList.Count != 0)
+                        {
+                            personObj.Serializer(personList);
+                        }
+                        if (petList.Count != 0)
+                        {
+                            petObj.Serializer(petList);
+                        }
                         break;
 
                     case 5:
 
                         List<PersonDetails> sortedList2 = PersonDetails.SortPersons(persons);
-                        Console.WriteLine("\n1. Deserialize Persons\n2. Deserialize Pets\n");
-                        int choice1 = Convert.ToInt32(Console.ReadLine());
-                        switch (choice1)
+                        foreach (var item in sortedList2)
                         {
-                            case 1: personObj.Deserializer(sortedList2); break;
-                            case 2: petObj.Deserializer(sortedList2); break;
-                            default: Console.WriteLine("Invalid Entry"); break;
+                            if (item is Pet)
+                            {
+                                petList.Add(item);
+                            }
+                            else
+                            {
+                                personList.Add(item);
+                            }
+                        }
+                        if (personList.Count != 0)
+                        {
+                            personObj.Deserializer();
+                        }
+                        if (petList.Count != 0)
+                        {
+                            petObj.Deserializer();
                         }
                         break;
 
@@ -115,7 +137,14 @@ namespace ConsoleApplication1
 
             Console.WriteLine("\nPress any key to exit");
             Console.ReadLine();
+        }
 
+        private static Tuple<string, DateTime> _Get()
+        {
+            string name = _GetName();
+            string dob = _GetDateOfBirth();
+            DateTime dt = _ValidateDob(dob);
+            return new Tuple<string, DateTime>(name, dt);
         }
 
         private static int _Menu()
@@ -174,6 +203,5 @@ namespace ConsoleApplication1
             Console.WriteLine("Date Of Birth : {0} \t ", item.Dob);
             Console.WriteLine("Age : {0} years {1} months {2} days \n ", item.Age.Years, item.Age.Months, item.Age.Days);
         }
-
     }
 }

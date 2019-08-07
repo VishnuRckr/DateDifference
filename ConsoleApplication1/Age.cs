@@ -20,11 +20,11 @@ namespace ConsoleApplication1
             this.Years = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Year - 1;
             this.Months = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Month - 1;
             this.Days = new DateTime(DateTimeOffset.Now.Subtract(dateofbirth).Ticks).Day - 1;
-        } 
-        
+        }
+
         public Age()
         {
 
-        }      
+        }
     }
 }

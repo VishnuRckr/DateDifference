@@ -11,6 +11,7 @@ using System.Xml.Linq;
 
 namespace ConsoleApplication1
 {
+    [Serializable]
     public class Pet : PersonDetails, ISerializationAndDeserialization
     {
 
@@ -25,23 +26,23 @@ namespace ConsoleApplication1
         {
         }
 
-        public new void Serializer(List<PersonDetails> item)
+        public override void Serializer(List<PersonDetails> listPet)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PersonDetails>));
             Stream stream = File.OpenWrite(@"D:/Pets.xml");
-            xmlSerializer.Serialize(stream, item);
+            xmlSerializer.Serialize(stream, listPet);
             stream.Close();
         }
-        public new void Deserializer(List<PersonDetails> sortedList2)
+        public override void Deserializer()
         {
             Console.WriteLine("\nDeserialized Pets' list is:\n");
-            using (FileStream stream = File.Open(@"D:/Pets.xml", FileMode.Open))
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PersonDetails>));
+            Stream stream = File.OpenRead(@"D:/Pets.xml");
+            List<PersonDetails> petDetails = (List<PersonDetails>)xmlSerializer.Deserialize(stream);
+            foreach (var element in petDetails)
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PersonDetails>));
-                foreach(var item in sortedList2)
-                {
-                    List<PersonDetails> petDetails = (List<PersonDetails>)xmlSerializer.Deserialize(stream);
-                }                
+                var petMember = (Pet)element;
+                Console.WriteLine("\nName: {0}\t Date Of Birth : {1}\t Pet Breed : {2}\t Age : {3} years {4} months {5} days\n", element.Name, element.Dob, petMember.PetBreed, element.Age.Years, element.Age.Months, element.Age.Days);
             }
         }
     }

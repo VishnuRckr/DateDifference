@@ -10,6 +10,10 @@ using System.Xml.Serialization;
 namespace ConsoleApplication1
 {
 
+
+
+    [XmlInclude(typeof(Pet))]
+    [Serializable]
     public class PersonDetails : ISerializationAndDeserialization
     {
 
@@ -36,24 +40,24 @@ namespace ConsoleApplication1
             List<PersonDetails> sortedList = persons.OrderBy(order => order.Dob).ToList();
             return sortedList;
         }
-        public void Serializer(List<PersonDetails> item)
+        public virtual void Serializer(List<PersonDetails> item)
         {
             string jsonSerializer = JsonConvert.SerializeObject(item);
             string path = @"D:/PersonDetails.json";
             File.AppendAllText(path, jsonSerializer);
         }
 
-        public void Deserializer(List<PersonDetails> item)
+        public virtual void Deserializer()
         {
             using (StreamReader reader = new StreamReader(@"D:/PersonDetails.json"))
             {
                 string json = reader.ReadToEnd();
-                var jsonDeserializer = JsonConvert.DeserializeObject <List<PersonDetails>>(json);
+                var jsonDeserializer = JsonConvert.DeserializeObject<List<PersonDetails>>(json);
                 Console.WriteLine("\nDeserialized Persons' list is\n");
                 foreach (var element in jsonDeserializer)
                 {
                     Console.WriteLine("Name: {0}\t Date Of Birth : {1}\t Age : {2} years {3} months {4} days\n", element.Name, element.Dob, element.Age.Years, element.Age.Months, element.Age.Days);
-                }           
+                }
             }
         }
     }
