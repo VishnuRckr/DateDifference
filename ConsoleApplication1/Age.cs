@@ -24,7 +24,6 @@ namespace ConsoleApplication1
 
         public Age()
         {
-
         }
     }
 }

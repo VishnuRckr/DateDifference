@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1
 {
-    interface ISerializationAndDeserialization
+    public interface ISerializationAndDeserialization
+        
     {
-        void Serializer(List<PersonDetails> item);
+        List<T> Serializer<T>(List<T> item);
         void Deserializer();
     }
 }

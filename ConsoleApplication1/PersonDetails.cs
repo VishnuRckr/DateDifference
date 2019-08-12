@@ -10,8 +10,6 @@ using System.Xml.Serialization;
 namespace ConsoleApplication1
 {
 
-
-
     [XmlInclude(typeof(Pet))]
     [Serializable]
     public class PersonDetails : ISerializationAndDeserialization
@@ -22,7 +20,6 @@ namespace ConsoleApplication1
         public DateTime Dob { get; set; }
 
         public Age Age { get; set; }
-
 
         public PersonDetails(string name, DateTime dob)
         {
@@ -40,11 +37,13 @@ namespace ConsoleApplication1
             List<PersonDetails> sortedList = persons.OrderBy(order => order.Dob).ToList();
             return sortedList;
         }
-        public virtual void Serializer(List<PersonDetails> item)
+
+        public virtual List<PersonDetails> Serializer<PersonDetails>(List<PersonDetails> item)
         {
             string jsonSerializer = JsonConvert.SerializeObject(item);
             string path = @"D:/PersonDetails.json";
             File.AppendAllText(path, jsonSerializer);
+            return null;
         }
 
         public virtual void Deserializer()

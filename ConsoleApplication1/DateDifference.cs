@@ -15,7 +15,6 @@ namespace ConsoleApplication1
     {
         public static int Type = 0;
 
-
         public static void Main(string[] args)
         {
 
@@ -24,20 +23,16 @@ namespace ConsoleApplication1
             {
                 Type = _Menu();
                 PersonDetails personObj = new PersonDetails();
-                Pet petObj = new Pet();
-                List<PersonDetails> personList = new List<PersonDetails>();
-                List<PersonDetails> petList = new List<PersonDetails>();
+                Pet petObj = new Pet();               
                 switch (Type)
                 {
                     case 1:
-
 
                         var getPerson = _Get();
                         if (getPerson.Item2 != DateTime.MinValue)
                         {
                             persons.Add(new PersonDetails(getPerson.Item1, getPerson.Item2));
                             Console.WriteLine("\nDetails Added\n");
-
                         }
                         else
                         {
@@ -49,7 +44,6 @@ namespace ConsoleApplication1
 
                         var getPet = _Get();
                         string petBreed = _GetPetBreed();
-
                         if (getPet.Item2 != DateTime.MinValue)
                         {
                             persons.Add(new Pet(getPet.Item1, petBreed, getPet.Item2));
@@ -67,7 +61,6 @@ namespace ConsoleApplication1
                         {
                             List<PersonDetails> sortedList = PersonDetails.SortPersons(persons);
                             Console.WriteLine("\nThe sorted list is :\n");
-
                             foreach (var item in sortedList)
                             {
                                 _Output(item);
@@ -82,7 +75,8 @@ namespace ConsoleApplication1
                     case 4:
 
                         List<PersonDetails> sortedList1 = PersonDetails.SortPersons(persons);
-
+                        List<PersonDetails> personList = new List<PersonDetails>();
+                        List<PersonDetails> petList = new List<PersonDetails>();
                         foreach (var item in sortedList1)
                         {
                             if (item is Pet)
@@ -94,10 +88,11 @@ namespace ConsoleApplication1
                                 personList.Add(item);
                             }
                         }
+                       
                         if (personList.Count != 0)
                         {
                             personObj.Serializer(personList);
-                        }
+                        }                        
                         if (petList.Count != 0)
                         {
                             petObj.Serializer(petList);
@@ -105,32 +100,27 @@ namespace ConsoleApplication1
                         break;
 
                     case 5:
-
-                        List<PersonDetails> sortedList2 = PersonDetails.SortPersons(persons);
-                        foreach (var item in sortedList2)
-                        {
-                            if (item is Pet)
-                            {
-                                petList.Add(item);
-                            }
-                            else
-                            {
-                                personList.Add(item);
-                            }
-                        }
-                        if (personList.Count != 0)
+                                                
+                        if (new FileInfo(@"D:/PersonDetails.json").Length != 0)
                         {
                             personObj.Deserializer();
                         }
-                        if (petList.Count != 0)
+                        else
+                        {
+                            Console.WriteLine("File is Empty");
+                        }
+                        if (new FileInfo(@"D:/Pets.xml").Length != 0)
                         {
                             petObj.Deserializer();
+                        }
+                        else
+                        {
+                            Console.WriteLine("File is Empty");
                         }
                         break;
 
                     default: Console.WriteLine("Invalid Entry"); break;
                 }
-
                 Console.WriteLine("Do you wish to continue(y/n)?");
 
             } while (Console.ReadLine() == "y");

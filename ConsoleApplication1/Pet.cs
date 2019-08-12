@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace ConsoleApplication1
 {
-    [Serializable]
+    [Serializable] 
     public class Pet : PersonDetails, ISerializationAndDeserialization
     {
 
@@ -26,13 +26,15 @@ namespace ConsoleApplication1
         {
         }
 
-        public override void Serializer(List<PersonDetails> listPet)
+        public override List<Pet> Serializer<Pet>(List<Pet> listPet)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PersonDetails>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Pet>));
             Stream stream = File.OpenWrite(@"D:/Pets.xml");
             xmlSerializer.Serialize(stream, listPet);
             stream.Close();
+            return null;      
         }
+
         public override void Deserializer()
         {
             Console.WriteLine("\nDeserialized Pets' list is:\n");
