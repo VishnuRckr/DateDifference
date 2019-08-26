@@ -17,24 +17,45 @@ namespace DOB.DBHelper
 
         public static void Write(List<PersonDetailsDBHelper> listPerson)
         {
-            SqlConnection connection = new SqlConnection("Data source=DEV31;Initial Catalog=DateOfBirth;User Id=sa;Password=!QAZ2wsx;");
-            using (SqlCommand cmd = new SqlCommand("InsertIntoTablePersonDetails", connection))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@PersonName", SqlDbType.VarChar);
-                cmd.Parameters.Add("@PersonDob", SqlDbType.Date);
-                cmd.Parameters.Add("@PersonAge", SqlDbType.Int);
+            //SqlConnection connection = new SqlConnection("Data source=DEV31;Initial Catalog=DateOfBirth;User Id=sa;Password=!QAZ2wsx;");
+            //using (SqlCommand cmd = new SqlCommand("InsertIntoTablePersonDetails", connection))
+            //{
+            //    cmd.CommandType = CommandType.StoredProcedure;
+            //    cmd.Parameters.Add("@PersonName", SqlDbType.VarChar);
+            //    cmd.Parameters.Add("@PersonDob", SqlDbType.Date);
+            //    cmd.Parameters.Add("@PersonAge", SqlDbType.Int);
 
-                connection.Open();
+            //    connection.Open();
+            //    foreach (var item in listPerson)
+            //    {
+            //        cmd.Parameters["@PersonName"].Value = item.Name;
+            //        cmd.Parameters["@PersonDob"].Value = item.Dob;
+            //        cmd.Parameters["@PersonAge"].Value = item.Age.Years;
+            //        cmd.ExecuteNonQuery();
+            //    }
+
+            //    connection.Close();
+
+                DataTable dt = new DataTable();           
+                dt.Columns.Add(new DataColumn("PersonName", typeof(string)));
+                dt.Columns.Add(new DataColumn("PersonDob", typeof(DateTime)));
+                dt.Columns.Add(new DataColumn("PersonAge", typeof(Int32)));
                 foreach (var item in listPerson)
                 {
-                    cmd.Parameters["@PersonName"].Value = item.Name;
-                    cmd.Parameters["@PersonDob"].Value = item.Dob;
-                    cmd.Parameters["@PersonAge"].Value = item.Age.Years;
+                
+                    dt.Rows.Add(item.Name, item.Dob, item.Age.Years);
+                                 
+                }
+                SqlConnection connection = new SqlConnection("Data source=DEV31;Initial Catalog=DateOfBirth;User Id=sa;Password=!QAZ2wsx;");
+                using (SqlCommand cmd = new SqlCommand("InsertIntoTablePersonDetails", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter dtparam = cmd.Parameters.AddWithValue("@persondetails", dt);
+                    dtparam.SqlDbType = SqlDbType.Structured;
+                    connection.Open();
                     cmd.ExecuteNonQuery();
                 }
                 connection.Close();
-            }
         }
 
         public void Read()
