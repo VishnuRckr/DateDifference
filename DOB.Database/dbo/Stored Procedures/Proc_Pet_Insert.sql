@@ -1,4 +1,4 @@
-﻿ create procedure [dbo].[InsertIntoTablePet]
+﻿ CREATE procedure [dbo].[Proc_Pet_Insert]
  --@PersonName VARCHAR(30),
  --@PersonDob DATE,
  --@PersonAge INT,

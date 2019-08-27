@@ -1,4 +1,4 @@
-﻿Create procedure [dbo].[InsertIntoTablePersonDetails]
+﻿CREATE procedure [dbo].[Proc_PersonDetails_Insert]
  --@PersonName VARCHAR(30),
  --@PersonDob DATE,
  --@PersonAge INT,
