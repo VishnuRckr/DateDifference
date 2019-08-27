@@ -60,6 +60,7 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Pet.sql" />
@@ -68,5 +69,8 @@
     <Build Include="dbo\Stored Procedures\ReadFromTablePersonDetails.sql" />
     <Build Include="dbo\Stored Procedures\InsertIntoTablePet.sql" />
     <Build Include="dbo\Stored Procedures\InsertIntoTablePersonDetails.sql" />
+    <Build Include="dbo\Stored Procedures\VariableDeclaration.sql" />
+    <Build Include="dbo\User Defined Types\PetTable.sql" />
+    <Build Include="dbo\User Defined Types\PersonDetailsTable.sql" />
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@ using DOB.Model;
 
 
 
+
 namespace ConsoleApplication1
 {
     class DateDifference
@@ -27,8 +28,7 @@ namespace ConsoleApplication1
             do
             {
                 Type = _Menu();
-                PersonDetailsConsole personConsoleObj = new PersonDetailsConsole();
-                PetConsole petConsoleObj = new PetConsole();
+
                 PersonDetails personObj = new PersonDetails();
                 Pet petObj = new Pet();
 
@@ -67,7 +67,7 @@ namespace ConsoleApplication1
 
                         if (persons.Count != 0)
                         {
-                            List<PersonDetails> sortedList = PersonDetailsConsole.SortPersons(persons);
+                            List<PersonDetails> sortedList = PersonDetails.SortPersons(persons);
                             Console.WriteLine("\nThe sorted list is :\n");
                             foreach (var item in sortedList)
                             {
@@ -85,11 +85,11 @@ namespace ConsoleApplication1
                         var lists = _DivideList(persons);
                         if (lists.Item1.Count != 0)
                         {
-                            personConsoleObj.Serializer(lists.Item1);
+                            personObj.Serializer(lists.Item1);
                         }
                         if (lists.Item2.Count != 0)
                         {
-                            petConsoleObj.Serializer(lists.Item2);
+                            petObj.Serializer(lists.Item2);
                         }
                         Console.WriteLine("\nWritten to File\n");
                         break;
@@ -102,7 +102,7 @@ namespace ConsoleApplication1
 
                             if (new FileInfo(@"D:/PersonDetails.json").Length != 0)
                             {
-                                personConsoleObj.Deserializer();
+                                personObj.Deserializer();
                             }
                             else
                             {
@@ -113,7 +113,7 @@ namespace ConsoleApplication1
                         {
                             if (new FileInfo(@"D:/Pets.xml").Length != 0)
                             {
-                                petConsoleObj.Deserializer();
+                                petObj.Deserializer();
                             }
                             else
                             {
@@ -129,6 +129,7 @@ namespace ConsoleApplication1
 
                         if (lists1.Item1.Count != 0)
                         {
+
                             personObj.Write(lists1.Item1);
                         }
                         if (lists1.Item2.Count != 0)
@@ -220,7 +221,7 @@ namespace ConsoleApplication1
 
         private static Tuple<List<PersonDetails>, List<PersonDetails>> _DivideList(List<PersonDetails> persons)
         {
-            List<PersonDetails> sortedList = PersonDetailsConsole.SortPersons(persons);
+            List<PersonDetails> sortedList = PersonDetails.SortPersons(persons);
             List<PersonDetails> personList = new List<PersonDetails>();
             List<PersonDetails> petList = new List<PersonDetails>();
             foreach (var item in sortedList)

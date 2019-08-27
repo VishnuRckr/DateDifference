@@ -47,7 +47,7 @@
 		<Element Type="SqlForeignKeyConstraint">
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[Pet].[Id]" />
+					<References Name="[dbo].[Pet].[PersonDetailsId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
@@ -65,26 +65,7 @@
 					<References Name="[dbo].[PersonDetails]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="3" />
-		</Element>
-		<Element Type="SqlPrimaryKeyConstraint">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[Pet].[PetId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[Pet]" />
-				</Entry>
-			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="4" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="5" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint">
 			<Relationship Name="ColumnSpecifications">
@@ -103,13 +84,32 @@
 					<References Name="[dbo].[PersonDetails]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="5" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="6" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Pet].[PetId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Pet]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="7" />
 		</Element>
 		<Element Type="SqlProcedure" Name="[dbo].[InsertIntoTablePersonDetails]">
 			<Property Name="BodyScript">
 				<Value><![CDATA[
  begin
- insert into PersonDetails values (@PersonName,@PersonDob,@PersonAge);
+ insert into PersonDetails(PersonName,PersonDob,PersonAge) select * from @persondetails;
  end]]></Value>
 			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -118,55 +118,82 @@
 					<References Name="[dbo].[PersonDetails]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[InsertIntoTablePersonDetails].[@PersonName]" />
+					<References Name="[dbo].[PersonDetails].[PersonName]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[InsertIntoTablePersonDetails].[@PersonDob]" />
+					<References Name="[dbo].[PersonDetails].[PersonDob]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[InsertIntoTablePersonDetails].[@PersonAge]" />
+					<References Name="[dbo].[PersonDetails].[PersonAge]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[InsertIntoTablePersonDetails].[@persondetails]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DynamicObjects">
+				<Entry>
+					<Element Type="SqlDynamicColumnSource" Name="[dbo].[InsertIntoTablePersonDetails].[@persondetails]" Disambiguator="4">
+						<Relationship Name="Columns">
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[InsertIntoTablePersonDetails].[@persondetails].[PersonName]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="30" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[varchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[InsertIntoTablePersonDetails].[@persondetails].[PersonDob]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[date]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[InsertIntoTablePersonDetails].[@persondetails].[PersonAge]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[int]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
 				</Entry>
 			</Relationship>
 			<Relationship Name="Parameters">
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePersonDetails].[@PersonName]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[varchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePersonDetails].[@PersonDob]">
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePersonDetails].[@persondetails]">
+						<Property Name="IsReadOnly" Value="True" />
 						<Relationship Name="Type">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[date]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePersonDetails].[@PersonAge]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[int]" />
+											<References Name="[dbo].[PersonDetailsTable]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -181,20 +208,19 @@
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
-				<Property Name="CreateOffset" Value="1" />
-				<Property Name="Length" Value="208" />
+				<Property Name="Length" Value="279" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
-				<Property Name="HeaderContents" Value=" CREATE procedure [dbo].[InsertIntoTablePersonDetails]&#xD;&#xA; @PersonName VARCHAR(30),&#xD;&#xA; @PersonDob DATE,&#xD;&#xA; @PersonAge INT&#xD;&#xA; as" />
+				<Property Name="HeaderContents" Value="Create procedure [dbo].[InsertIntoTablePersonDetails]&#xD;&#xA; --@PersonName VARCHAR(30),&#xD;&#xA; --@PersonDob DATE,&#xD;&#xA; --@PersonAge INT,&#xD;&#xA;&#xD;&#xA; @persondetails PersonDetailsTable ReadOnly&#xD;&#xA; as" />
 			</Annotation>
 		</Element>
 		<Element Type="SqlProcedure" Name="[dbo].[InsertIntoTablePet]">
 			<Property Name="BodyScript">
 				<Value><![CDATA[
  begin
- insert into PersonDetails(PersonName,PersonDob,PersonAge) values(@PersonName,@PersonDob,@PersonAge);
+ insert into PersonDetails(PersonName,PersonDob,PersonAge) select PersonName,PersonDob,PersonAge from @pet;
  declare @Id INT = scope_identity()
- insert into Pet (Id,PetBreed) values (@Id, @PetBreed);
+ insert into Pet (PersonDetailsId,PetBreed) values (@Id,(select PetBreed from @pet));
  end]]></Value>
 			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -215,83 +241,110 @@
 					<References Name="[dbo].[PersonDetails].[PersonAge]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[InsertIntoTablePet].[@PersonName]" />
+					<References Name="[dbo].[InsertIntoTablePet].[@pet]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[InsertIntoTablePet].[@PersonDob]" />
+					<References Name="[dbo].[InsertIntoTablePet].[@pet].[PersonName]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[InsertIntoTablePet].[@PersonAge]" />
+					<References Name="[dbo].[InsertIntoTablePet].[@pet].[PersonDob]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[InsertIntoTablePet].[@pet].[PersonAge]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Pet]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Pet].[Id]" />
+					<References Name="[dbo].[Pet].[PersonDetailsId]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Pet].[PetBreed]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[InsertIntoTablePet].[@PetBreed]" />
+					<References Name="[dbo].[InsertIntoTablePet].[@pet].[PetBreed]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DynamicObjects">
+				<Entry>
+					<Element Type="SqlDynamicColumnSource" Name="[dbo].[InsertIntoTablePet].[@pet]" Disambiguator="3">
+						<Relationship Name="Columns">
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[InsertIntoTablePet].[@pet].[PersonName]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="30" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[varchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[InsertIntoTablePet].[@pet].[PersonDob]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[date]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[InsertIntoTablePet].[@pet].[PersonAge]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[int]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[InsertIntoTablePet].[@pet].[PetBreed]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="30" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[varchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
 				</Entry>
 			</Relationship>
 			<Relationship Name="Parameters">
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePet].[@PersonName]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[varchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePet].[@PersonDob]">
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePet].[@pet]">
+						<Property Name="IsReadOnly" Value="True" />
 						<Relationship Name="Type">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[date]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePet].[@PersonAge]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[int]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[InsertIntoTablePet].[@PetBreed]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[varchar]" />
+											<References Name="[dbo].[PetTable]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -307,10 +360,10 @@
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
-				<Property Name="Length" Value="348" />
+				<Property Name="Length" Value="417" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
-				<Property Name="HeaderContents" Value=" CREATE procedure [dbo].[InsertIntoTablePet]&#xD;&#xA; @PersonName VARCHAR(30),&#xD;&#xA; @PersonDob DATE,&#xD;&#xA; @PersonAge INT,&#xD;&#xA; @PetBreed VARCHAR(30)&#xD;&#xA; as" />
+				<Property Name="HeaderContents" Value=" create procedure [dbo].[InsertIntoTablePet]&#xD;&#xA; --@PersonName VARCHAR(30),&#xD;&#xA; --@PersonDob DATE,&#xD;&#xA; --@PersonAge INT,&#xD;&#xA; --@PetBreed VARCHAR(30)&#xD;&#xA; @pet PetTable readonly&#xD;&#xA; as" />
 			</Annotation>
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[PersonDetails]">
@@ -385,13 +438,71 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="5" />
+			<AttachedAnnotation Disambiguator="6" />
+		</Element>
+		<Element Type="SqlTableType" Name="[dbo].[PersonDetailsTable]">
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlTableTypeSimpleColumn" Name="[dbo].[PersonDetailsTable].[PersonName]">
+						<Property Name="IsNullable" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlTableTypeSimpleColumn" Name="[dbo].[PersonDetailsTable].[PersonDob]">
+						<Property Name="IsNullable" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[date]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlTableTypeSimpleColumn" Name="[dbo].[PersonDetailsTable].[PersonAge]">
+						<Property Name="IsNullable" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Pet]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Pet].[Id]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Pet].[PersonDetailsId]">
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -444,8 +555,83 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="4" />
-			<AttachedAnnotation Disambiguator="3" />
+			<AttachedAnnotation Disambiguator="7" />
+			<AttachedAnnotation Disambiguator="5" />
+		</Element>
+		<Element Type="SqlTableType" Name="[dbo].[PetTable]">
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlTableTypeSimpleColumn" Name="[dbo].[PetTable].[PersonName]">
+						<Property Name="IsNullable" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlTableTypeSimpleColumn" Name="[dbo].[PetTable].[PersonDob]">
+						<Property Name="IsNullable" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[date]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlTableTypeSimpleColumn" Name="[dbo].[PetTable].[PersonAge]">
+						<Property Name="IsNullable" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlTableTypeSimpleColumn" Name="[dbo].[PetTable].[PetBreed]">
+						<Property Name="IsNullable" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
 		</Element>
 		<Element Type="SqlProcedure" Name="[dbo].[ReadFromTablePersonDetails]">
 			<Property Name="BodyScript">
@@ -476,7 +662,7 @@
 			<Property Name="BodyScript">
 				<Value><![CDATA[
  begin
- Select PersonDetails.PersonName, PersonDetails.PersonDob, PersonDetails.PersonAge, Pet.PetBreed from PersonDetails INNER JOIN Pet on  PersonDetails.Id=Pet.Id;
+ Select PersonDetails.PersonName, PersonDetails.PersonDob, PersonDetails.PersonAge, Pet.PetBreed from PersonDetails INNER JOIN Pet on  PersonDetails.Id=Pet.PersonDetailsId;
  end]]></Value>
 			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -491,7 +677,7 @@
 					<References Name="[dbo].[PersonDetails].[Id]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Pet].[Id]" />
+					<References Name="[dbo].[Pet].[PersonDetailsId]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[PersonDetails].[PersonName]" />
@@ -512,10 +698,161 @@
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
-				<Property Name="Length" Value="221" />
+				<Property Name="Length" Value="234" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE procedure [dbo].[ReadFromTablePet]&#xD;&#xA; as" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[dbo].[VariableDeclaration]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+begin
+Declare @persondetails PersonDetailsTable
+Declare @pet PetTable
+end]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[dbo].[PersonDetailsTable]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[PetTable]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DynamicObjects">
+				<Entry>
+					<Element Type="SqlDynamicColumnSource" Name="[dbo].[VariableDeclaration].[@persondetails]">
+						<Relationship Name="Columns">
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[VariableDeclaration].[@persondetails].[PersonName]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="30" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[varchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[VariableDeclaration].[@persondetails].[PersonDob]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[date]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[VariableDeclaration].[@persondetails].[PersonAge]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[int]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlDynamicColumnSource" Name="[dbo].[VariableDeclaration].[@pet]">
+						<Relationship Name="Columns">
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[VariableDeclaration].[@pet].[PersonName]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="30" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[varchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[VariableDeclaration].[@pet].[PersonDob]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[date]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[VariableDeclaration].[@pet].[PersonAge]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[int]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[VariableDeclaration].[@pet].[PetBreed]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="30" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[varchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="118" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="create procedure VariableDeclaration&#xD;&#xA;as" />
 			</Annotation>
 		</Element>
 	</Model>
