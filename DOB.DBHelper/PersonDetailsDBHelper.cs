@@ -9,13 +9,9 @@ namespace DOB.DBHelper
     public class PersonDetailsDBHelper
     {
         public string Name { get; set; }
-
         public DateTime Dob { get; set; }
-
         public Age Age { get; set; }
-
-
-
+       
         public static void Write(List<PersonDetailsDBHelper> listPerson)
         {
             DataTable dt = new DataTable();
@@ -38,21 +34,24 @@ namespace DOB.DBHelper
             connection.Close();
         }
 
-        public void Read()
+        public static List<PersonDetailsDBHelper> Read()
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
             connection.Open();
             SqlCommand cmd = new SqlCommand("Proc_PersonDetails_Select", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader reader = cmd.ExecuteReader();
+            List<PersonDetailsDBHelper> personList = new List<PersonDetailsDBHelper>();
             if (reader.HasRows)
             {
-                Console.WriteLine("\nPersons' table has the following entries :\n");
                 while (reader.Read())
                 {
-                    //reader["PersonId"]
-                    //reader["PersonName"]
-                    Console.WriteLine("Name : {0}\t Dob : {1}\t Age : {2} years\n", reader["PersonName"], reader["PersonDob"], reader["PersonAge"]);
+                    personList.Add(new PersonDetailsDBHelper
+                    {
+                        Name = (string)reader["PersonName"],
+                        Dob = (DateTime)reader["PersonDob"],
+                        Age = new Age((int)reader["PersonAge"])
+                    });
                 }
             }
             else
@@ -60,21 +59,40 @@ namespace DOB.DBHelper
                 Console.WriteLine("\nPersons' Table is empty\n");
             }
             connection.Close();
+            return personList;
         }
 
+        public static List<PersonDetailsDBHelper> ReadByID(int id)
+        {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
+            connection.Open();
+            SqlCommand cmd = new SqlCommand("Proc_PersonDetails_SelectById", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id; 
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<PersonDetailsDBHelper> personList = new List<PersonDetailsDBHelper>();
+            if(reader.Read())
+            {
+                personList.Add(new PersonDetailsDBHelper
+                {
+                    Name = (string)reader["PersonName"],
+                    Dob = (DateTime)reader["PersonDob"],
+                    Age = new Age((int)reader["PersonAge"])
+                });
 
-    }
+            }
+            
+            connection.Close();
+            return personList;
+        }
+    } 
+
     public class Age
     {
         public int Years { get; set; }
-        public int Months { get; set; }
-        public int Days { get; set; }
-
         public Age(int Years)
         {
             this.Years = Years;
         }
     }
-
-
 }

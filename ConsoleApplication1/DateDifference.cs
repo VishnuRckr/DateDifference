@@ -1,15 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.IO;
-using System.Xml.Serialization;
-using System.Data.SqlClient;
-using System.Data;
 using DOB.Model;
 
 
@@ -20,18 +12,14 @@ namespace ConsoleApplication1
     class DateDifference
     {
         public static int Type = 0;
-
         public static void Main(string[] args)
         {
             List<PersonDetails> persons = new List<PersonDetails>();
-
             do
             {
                 Type = _Menu();
-
                 PersonDetails personObj = new PersonDetails();
                 Pet petObj = new Pet();
-
                 switch (Type)
                 {
                     case 1:
@@ -94,12 +82,10 @@ namespace ConsoleApplication1
                         Console.WriteLine("\nWritten to File\n");
                         break;
 
-
                     case 5:
 
                         if (File.Exists(@"D:/PersonDetails.json"))
                         {
-
                             if (new FileInfo(@"D:/PersonDetails.json").Length != 0)
                             {
                                 personObj.Deserializer();
@@ -120,16 +106,13 @@ namespace ConsoleApplication1
                                 Console.WriteLine("File is Empty");
                             }
                         }
-
                         break;
 
                     case 6:
 
                         var lists1 = _DivideList(persons);
-
                         if (lists1.Item1.Count != 0)
                         {
-
                             personObj.Write(lists1.Item1);
                         }
                         if (lists1.Item2.Count != 0)
@@ -137,13 +120,14 @@ namespace ConsoleApplication1
                             petObj.Write(lists1.Item2);
                         }
                         Console.WriteLine("\nDatabase Updated\n");
-
                         break;
 
                     case 7:
+
                         personObj.Read();
                         petObj.Read();
                         break;
+
                     default: Console.WriteLine("Invalid Entry"); break;
                 }
                 Console.WriteLine("Do you wish to continue(y/n)?");

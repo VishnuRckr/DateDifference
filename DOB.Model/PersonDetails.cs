@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 
@@ -21,6 +19,8 @@ namespace DOB.Model
         public DateTime Dob { get; set; }
 
         public Age Age { get; set; }
+
+        PersonDetailsDBHelper personObj = new PersonDetailsDBHelper();
 
         public PersonDetails(string name, DateTime dob)
         {
@@ -64,7 +64,12 @@ namespace DOB.Model
                 });
             }
             PersonDetailsDBHelper personDB = new PersonDetailsDBHelper();
-            personDB.Read();
+            List<PersonDetailsDBHelper> list = PersonDetailsDBHelper.Read();
+            Console.WriteLine("PersonDetails table has the following entries :\n");
+            foreach (var item in list)
+            {
+                Console.WriteLine("Name : {0}\t Dob : {1}\t Age : {2}\n", item.Name, item.Dob, item.Age.Years);
+            }
 
         }
 

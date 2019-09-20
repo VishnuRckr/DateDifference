@@ -1,9 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DOB.Model.Interfaces;
 using DOB.DBHelper;
 using System.Xml.Serialization;
@@ -41,7 +38,7 @@ namespace DOB.Model
             }
 
             PetDBHelper petDB = new PetDBHelper();
-            petDB.Write(list);
+            PetDBHelper.Write(list);
         }
 
         public void Read()
@@ -60,7 +57,12 @@ namespace DOB.Model
                 });
             }
             PetDBHelper petDB = new PetDBHelper();
-            petDB.Read();
+            List<PetDBHelper> petlist = PetDBHelper.Read();
+            Console.WriteLine("\nPets' table has the following entries :\n");
+            foreach (var item in petlist)
+            {
+                Console.WriteLine("Name : {0}\t Dob : {1}\t Age : {2}\t PetBreed : {3}\n", item.Name, item.Dob, item.Age.Years, item.PetBreed);
+            }
         }
 
         public List<Pet> Serializer<Pet>(List<Pet> listPet)

@@ -10,7 +10,7 @@ namespace DOB.DBHelper
     {
         public string PetBreed { get; set; }
 
-        public void Write(List<PetDBHelper> listPet)
+        public static void Write(List<PetDBHelper> listPet)
         {
             DataTable dt = new DataTable();
             dt.Columns.Add(new DataColumn("PersonName", typeof(string)));
@@ -19,11 +19,8 @@ namespace DOB.DBHelper
             dt.Columns.Add(new DataColumn("PetBreed", typeof(string)));
             foreach (var item in listPet)
             {
-
                 dt.Rows.Add(item.Name, item.Dob, item.Age.Years, item.PetBreed);
-
             }
-
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
             using (SqlCommand cmd = new SqlCommand("Proc_Pet_Insert", connection))
             {
@@ -36,27 +33,33 @@ namespace DOB.DBHelper
             connection.Close();
         }
 
-        public void Read()
+        public static List<PetDBHelper> Read()
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
             connection.Open();
             SqlCommand cmd = new SqlCommand("Proc_Pet_Select", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader reader = cmd.ExecuteReader();
+            List<PetDBHelper> petList = new List<PetDBHelper>();
             if (reader.HasRows)
             {
-                Console.WriteLine("\nPets' table has the following entries :\n");
                 while (reader.Read())
-                {
-                    Console.WriteLine("Name : {0}\t Dob : {1}\t Age : {2} years\t Pet Breed : {3}\n", reader["PersonName"], reader["PersonDob"], reader["PersonAge"], reader["PetBreed"]);
+                {                 
+                        petList.Add(new PetDBHelper
+                        {
+                            Name = (string)reader["PersonName"],
+                            Dob = (DateTime)reader["PersonDob"],
+                            Age = (new Age((int)reader["PersonAge"])),
+                            PetBreed = (string)reader["PetBreed"]
+                        });                    
                 }
             }
             else
             {
-                Console.WriteLine("\nPets' Table is empty\n");
+                Console.WriteLine("\nPersons' Table is empty\n");
             }
             connection.Close();
+            return petList;
         }
-
     }
 }
