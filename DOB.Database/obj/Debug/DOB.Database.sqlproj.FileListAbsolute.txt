@@ -1,9 +1,5 @@
 C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\bin\Debug\DOB.Database.dacpac
 C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\bin\Debug\DOBDatabase.dll
 C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\bin\Debug\DOBDatabase.pdb
-C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\obj\Debug\Model.xml
-C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\obj\Debug\refactor.xml
-C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\obj\Debug\postdeploy.sql
-C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\obj\Debug\predeploy.sql
 C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\obj\Debug\DOBDatabase.dll
 C:\Users\vishnu\documents\visual studio 2015\Projects\ConsoleApplication1\DOB.Database\obj\Debug\DOBDatabase.pdb
