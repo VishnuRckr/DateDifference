@@ -47,6 +47,7 @@ namespace DOB.DBHelper
                 {                 
                         petList.Add(new PetDBHelper
                         {
+                            Id = (int)reader["PersonDetailsId"],
                             Name = (string)reader["PersonName"],
                             Dob = (DateTime)reader["PersonDob"],
                             Age = (new Age((int)reader["PersonAge"])),
@@ -60,6 +61,51 @@ namespace DOB.DBHelper
             }
             connection.Close();
             return petList;
+        }
+        public static PetDBHelper ReadByID(int id)
+        {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
+            connection.Open();
+            SqlCommand cmd = new SqlCommand("Proc_Pet_SelectById", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id;
+            SqlDataReader reader = cmd.ExecuteReader();
+            PetDBHelper personList = null;
+            if (reader.Read())
+            {
+                personList = new PetDBHelper
+                {
+                    Id = (int)reader["PersonDetailsId"],
+                    Name = (string)reader["PersonName"],
+                    Dob = (DateTime)reader["PersonDob"],
+                    Age = (new Age((int)reader["PersonAge"])),
+                    PetBreed = (string)reader["PetBreed"]
+                };
+
+            }
+
+            connection.Close();
+            return personList;
+        }
+        public static void Update(int id, List<PetDBHelper> listPet)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("PersonName", typeof(string)));
+            dt.Columns.Add(new DataColumn("PersonDob", typeof(DateTime)));
+            dt.Columns.Add(new DataColumn("PersonAge", typeof(Int32)));
+            dt.Columns.Add(new DataColumn("PetBreed", typeof(string)));
+            foreach (var item in listPet)
+            {
+                dt.Rows.Add(item.Name, item.Dob, item.Age.Years, item.PetBreed);
+            }
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
+            SqlCommand cmd = new SqlCommand("Proc_Pet_Update", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id;
+            SqlParameter dtparam = cmd.Parameters.AddWithValue("@pet", dt);
+            dtparam.SqlDbType = SqlDbType.Structured;
+            connection.Open();
+            cmd.ExecuteNonQuery();
         }
     }
 }

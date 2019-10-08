@@ -8,6 +8,7 @@ namespace DOB.DBHelper
 {
     public class PersonDetailsDBHelper
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Dob { get; set; }
         public Age Age { get; set; }
@@ -48,6 +49,7 @@ namespace DOB.DBHelper
                 {
                     personList.Add(new PersonDetailsDBHelper
                     {
+                        Id = (int)reader["Id"],
                         Name = (string)reader["PersonName"],
                         Dob = (DateTime)reader["PersonDob"],
                         Age = new Age((int)reader["PersonAge"])
@@ -62,7 +64,7 @@ namespace DOB.DBHelper
             return personList;
         }
 
-        public static List<PersonDetailsDBHelper> ReadByID(int id)
+        public static PersonDetailsDBHelper ReadByID(int id)
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
             connection.Open();
@@ -70,20 +72,41 @@ namespace DOB.DBHelper
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id; 
             SqlDataReader reader = cmd.ExecuteReader();
-            List<PersonDetailsDBHelper> personList = new List<PersonDetailsDBHelper>();
+            PersonDetailsDBHelper personList = null;
             if(reader.Read())
             {
-                personList.Add(new PersonDetailsDBHelper
+                personList = new PersonDetailsDBHelper
                 {
+                    Id = (int)reader["Id"],
                     Name = (string)reader["PersonName"],
                     Dob = (DateTime)reader["PersonDob"],
                     Age = new Age((int)reader["PersonAge"])
-                });
+                };
 
             }
             
             connection.Close();
             return personList;
+        }
+
+        public static void Update(int id, List<PersonDetailsDBHelper> listPerson)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("PersonName", typeof(string)));
+            dt.Columns.Add(new DataColumn("PersonDob", typeof(DateTime)));
+            dt.Columns.Add(new DataColumn("PersonAge", typeof(Int32)));
+            foreach (var item in listPerson)
+            {
+                dt.Rows.Add(item.Name, item.Dob, item.Age.Years);
+            }
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DOBConnectionString"].ConnectionString);
+            SqlCommand cmd = new SqlCommand("Proc_PersonDetails_Update", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id;
+            SqlParameter dtparam = cmd.Parameters.AddWithValue("@persondetails", dt);
+            dtparam.SqlDbType = SqlDbType.Structured;
+            connection.Open();
+            cmd.ExecuteNonQuery();
         }
     } 
 

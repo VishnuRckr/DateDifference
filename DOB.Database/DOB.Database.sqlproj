@@ -72,5 +72,8 @@
     <Build Include="dbo\Stored Procedures\Proc_PersonDetails_Select.sql" />
     <Build Include="dbo\Stored Procedures\Proc_PersonDetails_Insert.sql" />
     <Build Include="dbo\Stored Procedures\Proc_PersonDetails_SelectById.sql" />
+    <Build Include="dbo\Stored Procedures\Proc_Pet_Update.sql" />
+    <Build Include="dbo\Stored Procedures\Proc_Pet_SelectById.sql" />
+    <Build Include="dbo\Stored Procedures\Proc_PersonDetails_Update.sql" />
   </ItemGroup>
 </Project>
