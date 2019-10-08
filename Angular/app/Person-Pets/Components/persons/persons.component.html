@@ -1,0 +1,17 @@
+<h1>PersonDetails</h1> 
+  <h2>Persons</h2>
+  <table border ="1" width = "25%">
+      <tr>
+        <th>Name</th>
+        <th>Date Of Birth</th>
+        <th>Age</th>
+      </tr>
+      <tr *ngFor="let person of persons">
+        <td>{{person.Name}}</td>
+        <td >{{person.Dob}}</td>
+        <td>{{person.Age.Years}}</td>
+        <button (click)="editPersons(person.Id)">Edit</button>
+      </tr>
+     </table>
+     <br>
+     <button routerLink="/addperson/0" >Add Person</button>

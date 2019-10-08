@@ -1,0 +1,19 @@
+<h1>PersonDetails</h1> 
+  <h2>Pets</h2>  
+  <table border ="1" width = "25%">
+    <tr>
+      <th>Name</th>
+      <th>PetBreed</th>
+      <th>Date Of Birth</th>
+      <th>Age</th>
+    </tr>
+    <tr *ngFor="let pet of pets">
+      <td>{{pet.Name}}</td>
+      <td>{{pet.PetBreed}}</td>
+      <td >{{pet.Dob}}</td>
+      <td>{{pet.Age.Years}}</td>
+      <button (click)="editPets(pet.Id)">Edit</button>
+    </tr>
+   </table>
+   <br>
+   <button routerLink="/addpet/0">Add Pet</button>

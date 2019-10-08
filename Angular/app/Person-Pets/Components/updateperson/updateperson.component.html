@@ -1,0 +1,8 @@
+<div>
+    <br><br>
+    <label>Name </label><input class="updatepersons" type="text" [(ngModel)]="Name"  placeholder = "Name" /><br><br>
+    <label>Dob </label><input class="updatepersons" type="datetime-local" [(ngModel)]="Dob" placeholder="Dob" /><br><br>
+    <label>Age </label><input class="updatepersons" type="text" [(ngModel)]="Age" placeholder="Age" /><br><br>
+
+    <button (click)="addPersons()" routerLink ="/person">Update Person</button>
+</div>

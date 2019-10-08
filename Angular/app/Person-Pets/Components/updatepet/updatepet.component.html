@@ -1,0 +1,9 @@
+<div>
+   
+   <br><br><label>Name </label><input class="updatepets"type="text" [(ngModel)]="Name" placeholder="Name" /> <br><br>
+    <label>Dob </label><input class="updatepets" type="datetime-local" [(ngModel)]="Dob" placeholder="Dob" /><br><br>
+    <label>Age </label><input class="updatepets" type="text" [(ngModel)]="Age" placeholder="Age" /><br><br>
+    <label>PetBreed </label><input class="updatepets" type="text" [(ngModel)]="PetBreed" placeholder="PetBreed"/><br><br>
+    
+    <button (click)="addPets()" routerLink="/pet">Update Pet</button>
+   </div>
